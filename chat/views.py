@@ -32,5 +32,12 @@ def logout_view(request):
         "message": "You logged out"
     })
 
+
+def contacts(request):
+    pass
+
+def chat_room(request):
+    pass
+
 def auth_user(request):
     pass
