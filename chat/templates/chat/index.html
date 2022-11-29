@@ -1,26 +1,64 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Chat Rooms</title>
-</head>
-<body>
-    What chat room would you like to enter?<br>
-    <input id="room-name-input" type="text" size="100"><br>
-    <input id="room-name-submit" type="button" value="Enter">
+{% extends 'chat/layout.html' %}
+{% load static %}
+{% block csslink %} <link rel="stylesheet" href="{% static 'css/styles.css' %}" />  {% endblock %}
+{% block title %}Queue App{% endblock %}
+{% block body %}
+<div class="container py-3">
+    <header>
+      <nav class="navbar navbar-expand-md  bg-light mb-4" >
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Chat-app</a>
+          <button class="navbar-toggler " id="text-black" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon "></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
 
-    <script>
-        document.querySelector('#room-name-input').focus();
-        document.querySelector('#room-name-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#room-name-submit').click();
-            }
-        };
 
-        document.querySelector('#room-name-submit').onclick = function(e) {
-            var roomName = document.querySelector('#room-name-input').value;
-            window.location.pathname = '/chat/' + roomName + '/';
-        };
-    </script>
-</body>
-</html>
+              <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Contact-us</a>
+              </li>
+
+
+            </ul>
+            {% if  request.user.is_authenticated %}
+                <p>Welcome {{request.user.first_name}} Do you want to log out?</p>
+                <p><a class="mb-3 btn btn-warning" href="{% url 'log-out' %}">Log-out</a></p>
+            {% else %}
+                <a href="#" class="btn btn-outline-dark " >Login</a>
+                <a href="#" class="btn btn-success" >Register</a>
+            {% endif%}
+          </div>
+        </div>
+      </nav>
+      <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+
+
+      </div>
+
+      <div class="p-4 p-md-5 mb-4  rounded bg-light">
+        <div class="col-md-6 px-0">
+          <h1 class="display-4 fst-italic">This is chat app</h1>
+          <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and efficiently about what’s most interesting in this post’s contents.</p>
+          <p class="lead mb-0"><a href="#12" class=" fw-bold">Continue reading...</a></p>
+        </div>
+      </div>
+
+
+    </header>
+
+    <main>
+
+
+
+
+      </div>
+
+
+
+
+    </main>
+
+
+  </div>
+{% endblock %}
