@@ -21,11 +21,11 @@
 
 
             </ul>
-            {% if  request.user.is_authenticated %}
+           {% if  request.user.is_authenticated %}
                 <p>Welcome {{request.user.first_name}} Do you want to log out?</p>
-                <p><a class="mb-3 btn btn-warning" href="{% url 'log-out' %}">Log-out</a></p>
+                <p><a class="mb-3 btn btn-warning" href="{% url 'logout_view' %}">Log-out</a></p>
             {% else %}
-                <a href="#" class="btn btn-outline-dark " >Login</a>
+                <a href="{% url 'login_view' %}" class="btn btn-outline-dark " >Login</a>
                 <a href="#" class="btn btn-success" >Register</a>
             {% endif%}
           </div>
@@ -54,11 +54,7 @@
 
       </div>
 
-
-
-
     </main>
-
 
   </div>
 {% endblock %}
