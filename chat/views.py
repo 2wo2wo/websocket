@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect
 def index(request):
     return render(request, 'chat/index.html')
 
-
+contacts
 
 def login_view(request):
     if request.method =="POST":
