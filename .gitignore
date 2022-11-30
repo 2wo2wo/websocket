@@ -1,5 +1,5 @@
-#chat/__pycache__/
-#mysite/__pycache__/
+chat/__pycache__/
+mysite/__pycache__/
 *.log
 *.pot
 *.pyc

@@ -8,7 +8,6 @@ from django.http import HttpResponseRedirect
 def index(request):
     return render(request, 'chat/index.html')
 
-contacts
 
 def login_view(request):
     if request.method =="POST":
@@ -34,7 +33,7 @@ def logout_view(request):
 
 
 def contacts(request):
-    pass
+    return render(request, 'chat/contacts.html')
 
 def chat_room(request):
     pass
