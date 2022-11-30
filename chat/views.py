@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect
+from .models import Contact, Message
 # Create your views here.
 
 def index(request):
@@ -33,7 +34,15 @@ def logout_view(request):
 
 
 def contacts(request):
-    return render(request, 'chat/contacts.html')
+    user = request.user
+    contact = Contact.objects.get(contact_owner_id=user.id)
+    user_contacts = contact.contact_id.all()
+
+    value = {
+        'username': user.first_name,
+        'contacts': user_contacts
+    }
+    return render(request, 'chat/contacts.html', value)
 
 def chat_room(request):
     pass
