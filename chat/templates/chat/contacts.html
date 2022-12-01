@@ -15,12 +15,17 @@
 
 <!--   Contacts Page   -->
     {% for contact in  contacts %}
+
           <div class="chat__conversation-board__message-container">
             <div class="chat__conversation-board__message__person">
-              <div class="chat__conversation-board__message__person__avatar"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Monika Figi"/></div><span class="chat__conversation-board__message__person__nickname">Monika Figi</span>
+              <a href="{% url 'chat_room' contact.id user.id %}">
+                  <div class="chat__conversation-board__message__person__avatar"><img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Monika Figi"/></div><span class="chat__conversation-board__message__person__nickname">Monika Figi</span>
+              </a>
             </div>
             <div class="chat__conversation-board__message__context">
-              <div class="chat__conversation-board__message__bubble"> <span>{{ contact.first_name }}</span></div>
+              <a href="{% url 'chat_room' contact.id user.id %}" >
+                <div class="chat__conversation-board__message__bubble"> <span>{{ contact.first_name }}</span></div>
+              </a>
             </div>
             <div class="chat__conversation-board__message__options">
               <button class="btn-icon chat__conversation-board__message__option-button option-item emoji-button">
@@ -40,6 +45,7 @@
               </button>
             </div>
           </div>
+
     {% endfor %}
 
 
