@@ -44,10 +44,19 @@ def contacts(request):
     }
     return render(request, 'chat/contacts.html', value)
 
+
+
 @login_required(login_url='/login_user/')
 def chat_room(request, contact_id, user_id):
-
-    return render(request, 'chat/chat_room.html')
+    right_messages = Message.objects.filter(sent_id=contact_id).filter(owner_id=user_id)
+    left_messages = Message.objects.filter(sent_id=user_id).filter(owner_id=contact_id)
+    messages = right_messages | left_messages
+    messages = sorted(messages, key=lambda x: x.time_created)
+    values = {
+        'user_id': request.user.id,
+        'messages': messages
+    }
+    return render(request, 'chat/chat_room.html', values)
 
 def auth_user(request):
     pass
