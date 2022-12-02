@@ -5,7 +5,8 @@ from asgiref.sync import async_to_sync
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
+        self.room_name = str(self.scope["url_route"]["kwargs"]["contact_id"])  + str(self.scope["url_route"]["kwargs"]["user_id"])
+
         self.room_group_name = "chat_%s" % self.room_name
 
         # Join room group

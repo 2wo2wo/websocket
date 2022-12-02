@@ -52,8 +52,10 @@ def chat_room(request, contact_id, user_id):
     left_messages = Message.objects.filter(sent_id=user_id).filter(owner_id=contact_id)
     messages = right_messages | left_messages
     messages = sorted(messages, key=lambda x: x.time_created)
+    room_name = str(contact_id) + '/' + str(user_id)
     values = {
         'user_id': request.user.id,
+        'room_name': room_name,
         'messages': messages
     }
     return render(request, 'chat/chat_room.html', values)

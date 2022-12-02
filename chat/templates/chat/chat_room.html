@@ -38,7 +38,7 @@
           <line x1="15" y1="9" x2="15.01" y2="9"></line>
         </svg>
       </button>      
-      <input class="chat__conversation-panel__input panel-item" placeholder="Type a message..."/>      
+      <input class="chat__conversation-panel__input panel-item" id="chat_message" placeholder="Type a message..."/>      
       <button class="chat__conversation-panel__button panel-item btn-icon send-message-button" form="chatRoom" >
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-reactid="1036">
           
@@ -49,6 +49,43 @@
     </div>
   </div>
 </div>
+{{ room_name|json_script:"room-name" }}
+<script>
+  const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+  const chatSocket = new WebSocket(
+      'ws://'
+      + window.location.host
+      + '/ws/chat/'
+      + roomName
+      + '/'
+  );
+
+  chatSocket.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+      document.querySelector('#chat-log').value += (data.message + '\n');
+  };
+
+  chatSocket.onclose = function(e) {
+      console.error('Chat socket closed unexpectedly');
+  };
+
+  document.querySelector('#chat-message-input').focus();
+  document.querySelector('#chat-message-input').onkeyup = function(e) {
+      if (e.keyCode === 13) {  // enter, return
+          document.querySelector('#chat-message-submit').click();
+      }
+  };
+
+  document.querySelector('#chat-message-submit').onclick = function(e) {
+      const messageInputDom = document.querySelector('#chat-message-input');
+      const message = messageInputDom.value;
+      chatSocket.send(JSON.stringify({
+          'message': message
+      }));
+      messageInputDom.value = '';
+  };
+</script>
 
 </body>
 </html>
