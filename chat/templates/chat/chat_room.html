@@ -11,15 +11,15 @@
 <body>
 <!-- partial:index.partial.html -->
 <div class="--dark-theme" id="chat">
-  <div class="chat__conversation-board">
+  <div class="chat__conversation-board" id="chat_board">
 
-{% for message in  messages %}
-  {% if message.owner_id.id == user_id %}
-    {% include 'chat/user.html' %}
-  {% else %}
-    {% include 'chat/sender.html' %}
-  {% endif %}
-{% endfor %}
+    {% for message in  messages %}
+      {% if message.owner_id.id == user_id %}
+        {% include 'chat/user.html' %}
+      {% else %}
+        {% include 'chat/sender.html' %}
+      {% endif %}
+    {% endfor %}
 
   </div>
   <div class="chat__conversation-panel">
@@ -38,8 +38,8 @@
           <line x1="15" y1="9" x2="15.01" y2="9"></line>
         </svg>
       </button>      
-      <input class="chat__conversation-panel__input panel-item" id="chat_message" placeholder="Type a message..."/>      
-      <button class="chat__conversation-panel__button panel-item btn-icon send-message-button" form="chatRoom" >
+      <input class="chat__conversation-panel__input panel-item" id="chat-message-input" placeholder="Type a message..."/>      
+      <button class="chat__conversation-panel__button panel-item btn-icon send-message-button" id="chat-message-submit">
          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-reactid="1036">
           
           <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -50,8 +50,10 @@
   </div>
 </div>
 {{ room_name|json_script:"room-name" }}
+{{ user_id|json_script:"user_id" }}
 <script>
   const roomName = JSON.parse(document.getElementById('room-name').textContent);
+  const userId = JSON.parse(document.getElementById('user_id').textContent);
 
   const chatSocket = new WebSocket(
       'ws://'
@@ -63,7 +65,8 @@
 
   chatSocket.onmessage = function(e) {
       const data = JSON.parse(e.data);
-      document.querySelector('#chat-log').value += (data.message + '\n');
+      
+
   };
 
   chatSocket.onclose = function(e) {
@@ -77,12 +80,38 @@
       }
   };
 
+  function createSender(message) {
+    const top = document.createElement('div')
+    top.classList.add('chat__conversation-board__message-container')    
+    const child = document.createElement('div')
+    child.classList.add("chat__conversation-board__message__context")
+    const child_of_child = document.createElement('div')
+    child_of_child.classList.add('chat__conversation-board__message__bubble')
+    const textMessage = document.createElement('span')
+    textMessage.textContent = message
+    child_of_child.appendChild(textMessage)
+    child.appendChild(child_of_child)
+    top.appendChild(child)
+    return top
+  }
+
+  function elMessage(message){
+      let a = document.getElementById('chat_board');
+      const fragment = document.createDocumentFragment();
+      const li = fragment
+      .appendChild(createSender(message));      
+      a.appendChild(fragment)
+  }
+
   document.querySelector('#chat-message-submit').onclick = function(e) {
       const messageInputDom = document.querySelector('#chat-message-input');
       const message = messageInputDom.value;
+      
       chatSocket.send(JSON.stringify({
+          'user_id':userId,
           'message': message
       }));
+      elMessage(message)
       messageInputDom.value = '';
   };
 </script>
