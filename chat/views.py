@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import Contact, Message
+from .decorators import chat_auth
 # Create your views here.
 
 def index(request):
@@ -47,6 +48,7 @@ def contacts(request):
 
 
 @login_required(login_url='/login_user/')
+@chat_auth
 def chat_room(request, contact_id, user_id):
     right_messages = Message.objects.filter(sent_id=contact_id).filter(owner_id=user_id)
     left_messages = Message.objects.filter(sent_id=user_id).filter(owner_id=contact_id)
