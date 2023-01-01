@@ -20,11 +20,8 @@ class Contact(models.Model):
 
 class Unique_room(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True, primary_key=True)
-    first_user = models.ForeignKey(User, models.CASCADE, related_name='first_user')
-    second_user = models.ForeignKey(User, models.CASCADE, related_name='second_user')
+    users = models.ManyToManyField(User)
 
     def __str__(self):
-        first = User.objects.get(pk=self.first_user.id).username
-        second = User.objects.get(pk=self.second_user.id).username
-        return first + ' and ' + second
+        return str(self.id)
 
