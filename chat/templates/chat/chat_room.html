@@ -65,7 +65,8 @@
 
   chatSocket.onmessage = function(e) {
       const data = JSON.parse(e.data);
-      
+      console.log(data)
+      elMessage(data.message)
 
   };
 
@@ -111,7 +112,7 @@
           'user_id':userId,
           'message': message
       }));
-      elMessage(message)
+
       messageInputDom.value = '';
   };
 </script>
