@@ -1,5 +1,9 @@
 const roomName = JSON.parse(document.getElementById('room-name').textContent);
-  const userId = JSON.parse(document.getElementById('user_id').textContent);
+const userId = JSON.parse(document.getElementById('user_id').textContent);
+const element = document.getElementById('chat_board');
+element.scrollTop = element.scrollHeight;
+
+
 
   const chatSocket = new WebSocket(
       'ws://'
@@ -10,9 +14,9 @@ const roomName = JSON.parse(document.getElementById('room-name').textContent);
   );
 
   chatSocket.onmessage = function(e) {
-      const data = JSON.parse(e.data);
-      console.log(data)
-      elMessage(data.message)
+      const data = JSON.parse(e.data);      
+      elMessage(data);
+      element.scrollTop = element.scrollHeight;
 
   };
 
@@ -27,26 +31,29 @@ const roomName = JSON.parse(document.getElementById('room-name').textContent);
       }
   };
 
-  function createSender(message) {
+  function createSender(data) {
     const top = document.createElement('div')
     top.classList.add('chat__conversation-board__message-container')
+    if (data.user_id === userId ){
+        top.classList.add('reversed')
+    }
     const child = document.createElement('div')
     child.classList.add("chat__conversation-board__message__context")
     const child_of_child = document.createElement('div')
     child_of_child.classList.add('chat__conversation-board__message__bubble')
     const textMessage = document.createElement('span')
-    textMessage.textContent = message
+    textMessage.textContent = data.message
     child_of_child.appendChild(textMessage)
     child.appendChild(child_of_child)
     top.appendChild(child)
     return top
   }
 
-  function elMessage(message){
+  function elMessage(data){
       let a = document.getElementById('chat_board');
       const fragment = document.createDocumentFragment();
       const li = fragment
-      .appendChild(createSender(message));
+      .appendChild(createSender(data));
       a.appendChild(fragment)
   }
 
