@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .models import Contact, Message, Unique_room
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+from.decorators import auth_user_chat_room
 # Create your views here.
 
 
@@ -64,13 +65,14 @@ def chat_room_name(contact_id, user_id):
 
 
 @login_required(login_url='/login_user/')
+@auth_user_chat_room
 def chat_room(request, contact_id, user_id):
     right_messages = Message.objects.filter(sent_id=contact_id).filter(owner_id=user_id)
     left_messages = Message.objects.filter(sent_id=user_id).filter(owner_id=contact_id)
     messages = right_messages | left_messages
     messages = sorted(messages, key=lambda x: x.time_created)
     # room_name = str(contact_id) + '/' + str(user_id)
-    # print(chat_room_name(contact_id, user_id))
+    # print(chat_room_name(contact_id, user_id))       # old version chat_room
     room_name = str(chat_room_name(contact_id, user_id))
     values = {
         'user_id': request.user.id,
