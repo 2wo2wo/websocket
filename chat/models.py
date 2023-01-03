@@ -11,7 +11,7 @@ class Message(models.Model):
         return self.text
 
 class Contact(models.Model):
-    contact_id = models.ManyToManyField(User)
+    contact_id = models.ManyToManyField(User, blank=True)
     contact_owner_id = models.ForeignKey(User, models.CASCADE, related_name='contact_owner')
 
     def __str__(self):

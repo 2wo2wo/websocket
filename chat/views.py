@@ -84,3 +84,31 @@ def chat_room(request, contact_id, user_id):
 
 def auth_user(request):
     pass
+
+
+def register(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        password_confirm = request.POST["confirm-password"]
+        email = request.POST["email"]
+        first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
+        if password == password_confirm:
+            user = User.objects.create_user(username=username,
+                                            email=email,
+                                            password=password,
+                                            last_name=last_name,
+                                            first_name=first_name
+                                            )
+
+            user.save()
+            user = authenticate(request, username=username, password=password)
+            login(request, user)
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            return render(request, 'main/register.html', {
+                "message": "passwords do not match"
+            })
+
+    return render(request, 'chat/registration.html')
