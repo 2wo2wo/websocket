@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-
+from .models import Contact
 
 def auth_user_chat_room(func):
     def wrapper_func(request, contact_id, user_id):
@@ -7,4 +7,15 @@ def auth_user_chat_room(func):
             return func(request, contact_id, user_id)
         else:
             return HttpResponse('you are not allowed')
+    return wrapper_func
+
+
+def contacts_exists(func):
+    def wrapper_func(request):
+        try:
+            return func(request)
+        except Contact.DoesNotExist:
+            contact = Contact.objects.create(contact_owner_id=request.user)
+            contact.save()
+            return func(request)
     return wrapper_func

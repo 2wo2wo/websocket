@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .models import Contact, Message, Unique_room
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from.decorators import auth_user_chat_room
+from .decorators import auth_user_chat_room, contacts_exists
 # Create your views here.
 
 
@@ -38,6 +38,7 @@ def logout_view(request):
 
 
 @login_required(login_url='/login_user/')
+@contacts_exists
 def contacts(request):
     user = request.user
     contact = Contact.objects.get(contact_owner_id=user.id)
