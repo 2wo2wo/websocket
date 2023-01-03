@@ -114,9 +114,38 @@ def register(request):
 
     return render(request, 'chat/registration.html')
 
+
+def user_exists(username):
+    try:
+        user = User.objects.get(username=username)
+        return user
+    except User.DoesNotExist:
+        return 0
+
+
+def contact_added(typed_user, user):
+    user_contact = Contact.objects.get(contact_owner_id=user)
+    user_contact.contact_id.add(typed_user)
+    user_contact.save()
+
+
 @login_required(login_url='/login_user/')
+@contacts_exists
 def contact_add(request):
     if request.method == 'POST':
-        print(request.POST['phone'])
-        return render(request, 'chat/contact_add.html')
+        username = request.POST['username']
+        typed_user = user_exists(username)
+        if not typed_user:
+            value = {
+                'message': 'user does not exist'
+            }
+            return render(request, 'chat/contact_add.html', value)
+        if typed_user != request.user:
+            contact_added(typed_user, request.user)
+        else:
+            value = {
+                'message': 'username are used'
+            }
+            return render(request, 'chat/contact_add.html', value)
+        return HttpResponseRedirect(reverse('contacts'))
     return render(request, 'chat/contact_add.html')

@@ -16,7 +16,11 @@
                 <span class="contact100-form-title">
                     Contact Name or email
                 </span>
-
+                {% if message %}
+                <span >
+                    {{ message }}
+                </span>
+                {% endif %}
                 <div class="wrap-input100 validate-input" data-validate="Please enter your email: e@a.x">
                     <input class="input100" type="text" name="username" placeholder="friend's username">
                     <span class="focus-input100"></span>
