@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-nnfjmj&6u83nx9-o$3xf6i_qs!%boc6)x9j7u^m1pulr85hc*%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['web-production-194a.up.railway.app', '127.0.0.1:8000']
 
 
 # Application definition
@@ -53,6 +53,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://web-production-194a.up.railway.app/registration/'
 ]
 
 ROOT_URLCONF = 'mysite.urls'
