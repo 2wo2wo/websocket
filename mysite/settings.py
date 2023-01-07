@@ -87,18 +87,28 @@ CHANNEL_LAYERS = {
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': '',
+#         'USER': '',
+#         'PASSWORD': '888888888',
+#         'HOST': '',
+#         'PORT': '',
+#     }
+# }
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'chatapp',
-        'USER': 'lexa',
-        'PASSWORD': '6490asdf',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': '8n9WjuT4xgcaBVzOrnuI',
+        'HOST': 'containers-us-west-166.railway.app',
+        'PORT': '5874',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
