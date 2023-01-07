@@ -104,11 +104,12 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': '8n9WjuT4xgcaBVzOrnuI',
-        'HOST': 'containers-us-west-166.railway.app',
-        'PORT': '5874',
+        'PASSWORD': 'WV7uTuMwockKi2tgnEbR',
+        'HOST': 'containers-us-west-73.railway.app',
+        'PORT': '7532',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
