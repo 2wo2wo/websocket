@@ -6,7 +6,7 @@ element.scrollTop = element.scrollHeight;
 
 
   const chatSocket = new WebSocket(
-      'ws://'
+      'wss://'
       + window.location.host
       + '/ws/chat/'
       + roomName
