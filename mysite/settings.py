@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-nnfjmj&6u83nx9-o$3xf6i_qs!%boc6)x9j7u^m1pulr85hc*%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['web-production-194a.up.railway.app', '127.0.0.1:8000', 'django-server-production-508d.up.railway.app']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -56,8 +56,9 @@ MIDDLEWARE = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://web-production-194a.up.railway.app',
-    'https://django-server-production-508d.up.railway.app'
+    "http://127.0.0.1:8000/",
+    'https://www.2wo1ne.uz',
+    os.environ.get("CSRF_URL")
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -108,11 +109,11 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'WV7uTuMwockKi2tgnEbR',
-        'HOST': 'containers-us-west-73.railway.app',
-        'PORT': '7532',
+        'NAME': os.environ["PGDATABASE"],
+        'USER': os.environ["PGUSER"],
+        'PASSWORD': os.environ["PGPASSWORD"],
+        'HOST': os.environ["PGHOST"],
+        'PORT': os.environ["PGPORT"],
     }
 }
 
