@@ -58,7 +58,8 @@ MIDDLEWARE = [
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000/",
     'https://www.2wo1ne.uz',
-    os.environ["CSRF_URL"]
+    os.environ["CSRF_URL"],
+    "https://django-server-production-3098.up.railway.app/"
 ]
 
 ROOT_URLCONF = 'mysite.urls'
