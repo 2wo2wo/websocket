@@ -58,7 +58,7 @@ MIDDLEWARE = [
 CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:8000/",
     'https://www.2wo1ne.uz',
-    os.environ.get("CSRF_URL")
+    os.environ["CSRF_URL"]
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -86,7 +86,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+            "hosts": [os.environ['REDIS_URL']],
         },
     },
 }
