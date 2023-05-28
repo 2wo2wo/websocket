@@ -3,10 +3,10 @@ const userId = JSON.parse(document.getElementById('user_id').textContent);
 const element = document.getElementById('chat_board');
 element.scrollTop = element.scrollHeight;
 
-const webss = window.location.protocol == 'https' ? 'wss' : 'ws'
+//const webss = window.location.protocol == 'https' ? 'wss' : 'ws'
 
   const chatSocket = new WebSocket(
-      webss + window.location.host
+      'wss' + window.location.host
       + '/ws/chat/'
       + roomName
       + '/'
