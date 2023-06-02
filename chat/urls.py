@@ -1,4 +1,4 @@
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 
 from . import views
 
@@ -10,5 +10,6 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('chat_room/<int:contact_id>/<int:user_id>/', views.chat_room, name='chat_room'),
     path('registration/', views.register, name='registration'),
-    path('contact-add/', views.contact_add, name='contact_add')
+    path('contact-add/', views.contact_add, name='contact_add'),
+    path('accounts/', include('allauth.urls')),
 ]

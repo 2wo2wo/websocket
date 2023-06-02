@@ -41,6 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'chat.apps.ChatConfig',
+
+    'django.contrib.sites',  # django-allauth
+
+    'allauth',  # django-allauth
+    'allauth.account',  # django-allauth
+    'allauth.socialaccount',  # django-allauth
+    'allauth.socialaccount.providers.github',
+
     # 'rest_framework'
 ]
 
@@ -160,3 +168,16 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+SITE_ID = 1
+
+ACCOUNT_EMAIL_VERIFICATION = os.environ['EMAIL']
+
+LOGIN_REDIRECT_URL = 'index'
+
+SOCIALACCOUNT_LOGIN_ON_GET=True
