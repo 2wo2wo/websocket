@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'allauth.account',  # django-allauth
     'allauth.socialaccount',  # django-allauth
     'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
 
     # 'rest_framework'
 ]
