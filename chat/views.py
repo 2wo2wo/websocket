@@ -43,7 +43,6 @@ def contacts(request):
     user = request.user
     contact = Contact.objects.get(contact_owner_id=user.id)
     user_contacts = contact.contact_id.all()
-
     value = {
         'username': user.first_name,
         'contacts': user_contacts
@@ -55,7 +54,7 @@ def chat_room_name(contact_id, user_id):
     user1 = User.objects.get(pk=contact_id)
     user2 = User.objects.get(pk=user_id)
     try:
-        room_id = Unique_room.objects.filter(users__in=[user1,]).get(users__in=[user2,])
+        room_id = Unique_room.objects.filter(users__in=[user1, ]).get(users__in=[user2, ])
         return room_id.id
     except ObjectDoesNotExist:
         room_id = Unique_room.objects.create()
@@ -149,3 +148,34 @@ def contact_add(request):
             return render(request, 'chat/contact_add.html', value)
         return HttpResponseRedirect(reverse('contacts'))
     return render(request, 'chat/contact_add.html')
+
+
+def search_by_key(keyword):
+    usernames = User.objects.filter(username__contains=keyword)
+    first = User.objects.filter(first_name__contains=keyword)
+    last = User.objects.filter(last_name__contains=keyword)
+    email = User.objects.filter(email__contains=keyword)
+    return usernames | first | last | email
+    # return usernames
+
+
+@login_required(login_url='/login_user/')
+@contacts_exists
+def contact_add_page(request):
+    if request.method == "POST":
+        results_search = search_by_key(request.POST['keyword'])
+        if not len(results_search):
+            value = {
+                'message': 'Users not found. Can you try one more time?'
+            }
+            return render(request, 'chat/searchbar.html', value)
+        if len(results_search) > 0:
+            value = {
+                "users": results_search
+            }
+            return render(request, 'chat/searchbar.html', value)
+    return render(request, 'chat/searchbar.html')
+
+
+def friend_add_function(request, user_id):
+    pass

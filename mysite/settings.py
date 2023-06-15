@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'chat.apps.ChatConfig',
+    'django.contrib.postgres',  #postgresql search
 
     'django.contrib.sites',  # django-allauth
 
