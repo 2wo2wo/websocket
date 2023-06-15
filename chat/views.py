@@ -177,5 +177,15 @@ def contact_add_page(request):
     return render(request, 'chat/searchbar.html')
 
 
+
+@login_required(login_url='/login_user/')
+@contacts_exists
 def friend_add_function(request, user_id):
-    pass
+    user_contact = Contact.objects.get(contact_owner_id=request.user)
+    friend = User.objects.get(pk=user_id)
+    user_contact.contact_id.add(friend)
+    user_contact.save()
+    value = {
+        'message': 'Friend added check contacts page'
+    }
+    return render(request, 'chat/searchbar.html', value)

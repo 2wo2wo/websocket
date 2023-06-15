@@ -11,9 +11,9 @@ def auth_user_chat_room(func):
 
 
 def contacts_exists(func):
-    def wrapper_func(request):
+    def wrapper_func(request, *args, **kwargs):
         try:
-            return func(request)
+            return func(request, *args, **kwargs)
         except Contact.DoesNotExist:
             contact = Contact.objects.create(contact_owner_id=request.user)
             contact.save()

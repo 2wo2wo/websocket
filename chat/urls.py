@@ -13,5 +13,5 @@ urlpatterns = [
     path('contact-add/', views.contact_add, name='contact_add'),
     path('accounts/', include('allauth.urls')),
     path('searchbar/', views.contact_add_page, name="searchbar"),
-    path('searchbar/<int:user_id>/', views.friend_add_function, name="friend_added"),
+    path('add_friend/<int:user_id>/', views.friend_add_function, name="add_friend"),
 ]
