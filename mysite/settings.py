@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
 
-    # 'rest_framework'
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -197,4 +197,4 @@ ACCOUNT_EMAIL_VERIFICATION = 'alisherbekjamilov@gmail.com'
 
 LOGIN_REDIRECT_URL = 'index'
 
-SOCIALACCOUNT_LOGIN_ON_GET=True
+SOCIALACCOUNT_LOGIN_ON_GET = True
