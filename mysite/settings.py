@@ -115,6 +115,9 @@ DATABASES = {
         'PASSWORD': '6490asdf',
         'HOST': 'localhost',
         'PORT': '5432',
+        'TEST': {
+            'NAME': 'ali',
+        },
     }
 }
 
