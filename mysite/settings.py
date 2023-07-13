@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
 
-    # 'rest_framework'
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
