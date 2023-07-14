@@ -1,10 +1,15 @@
-from django.urls import path, re_path, include
-
+from django.urls import path,  include
 from . import views, views_api
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 url_apis = [
-    path('user_contacts/', views_api.ContactApi.as_view()),
-    path('api-auth/', include('rest_framework.urls')),
+    path('user_contacts/', views_api.ContactApi.as_view(), name='contact_api'),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
 ]
 
 
