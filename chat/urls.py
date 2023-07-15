@@ -9,6 +9,7 @@ url_apis = [
     path('user_contacts/', views_api.ContactApi.as_view(), name='contact_api'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('search_user/', views_api.ContactSearchApi.as_view(), name='search_user')
 
 ]
 
