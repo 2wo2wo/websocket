@@ -1,4 +1,7 @@
-from django.urls import path,  include
+from django.urls import path,  include, re_path
+
+from django.views.generic import RedirectView
+
 from . import views, views_api
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -25,5 +28,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('searchbar/', views.contact_add_page, name="searchbar"),
     path('add_friend/<int:user_id>/', views.friend_add_function, name="add_friend"),
+
+    re_path(r'^favicon\.ico$', RedirectView.as_view(url='/static/images/favicon.ico')),
     path('api/v1/', include(url_apis))
 ]
