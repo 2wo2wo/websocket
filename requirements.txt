@@ -14,6 +14,8 @@ daphne==4.0.0
 defusedxml==0.7.1
 Django==4.1.3
 django-allauth==0.54.0
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.2.2
 gunicorn==20.1.0
 hyperlink==21.0.0
 idna==3.4
@@ -29,6 +31,7 @@ PyJWT==2.7.0
 pyOpenSSL==22.1.0
 pyparsing==3.0.9
 python3-openid==3.2.0
+pytz==2023.3
 redis==4.3.5
 requests==2.31.0
 requests-oauthlib==1.3.1
