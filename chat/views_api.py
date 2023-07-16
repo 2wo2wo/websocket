@@ -5,7 +5,7 @@ from .serializers import ContactSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from . import views
-
+from rest_framework.exceptions import ValidationError
 
 class ContactApi(APIView):
     permission_classes = [IsAuthenticated]
@@ -25,7 +25,7 @@ class ContactSearchApi(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
-    def post(self, request, format=None, *args, **kwargs):
+    def get(self, request, format=None, *args, **kwargs):
         keyword = request.data['keyword']
         users_found = views.search_by_key(keyword)
         user_serializer = UserSerializer(users_found, many=True)
