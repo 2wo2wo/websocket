@@ -54,7 +54,7 @@ def chat_room_name(contact_id, user_id):
     user1 = User.objects.get(pk=contact_id)
     user2 = User.objects.get(pk=user_id)
     try:
-        room_id = Unique_room.objects.filter(users__in=[user1, ]).get(users__in=[user2, ])
+        room_id = Unique_room.objects.filter(users__in=[user1,]).get(users__in=[user2,])
         return room_id.id
     except ObjectDoesNotExist:
         room_id = Unique_room.objects.create()
