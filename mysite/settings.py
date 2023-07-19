@@ -44,15 +44,17 @@ INSTALLED_APPS = [
     'django.contrib.postgres',  #postgresql search
 
     'django.contrib.sites',  # django-allauth
-
     'allauth',  # django-allauth
     'allauth.account',  # django-allauth
     'allauth.socialaccount',  # django-allauth
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
+    'rest_auth.registration',
 
     'rest_framework',
     'rest_framework_simplejwt',
+     'rest_framework.authtoken',
+     'rest_auth',
 ]
 
 MIDDLEWARE = [

@@ -7,6 +7,8 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from .oauth_social import GoogleLogin
+
 
 url_apis = [
     path('user_contacts/', views_api.ContactApi.as_view(), name='contact_api'),
@@ -14,7 +16,7 @@ url_apis = [
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('search_user/', views_api.ContactSearchApi.as_view(), name='search_user'),
     path('user_add/', views_api.AddUserContactApi.as_view(), name='user_add'),
-
+    path('social_auth/google', GoogleLogin.as_view(), name='google_authentication')
 ]
 
 
