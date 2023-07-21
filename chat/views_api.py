@@ -1,12 +1,13 @@
 from .models import Contact
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import ContactSerializer, UserSerializer
+from .serializers import ContactSerializer, UserSerializer, RegistrationSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from . import views
-from rest_framework.exceptions import ValidationError
 from django.contrib.auth.models import User
+from rest_framework import status
+
 
 class ContactApi(APIView):
     permission_classes = [IsAuthenticated]
@@ -49,3 +50,17 @@ class AddUserContactApi(APIView):
         user_contacts, created = Contact.objects.get_or_create(contact_owner_id=request.user)
         user_contacts.contact_id.add(user_add)
         return Response({'message': 'user_added'})
+
+
+class RegistrationAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, format=None, *args, **kwargs):
+        serializer = RegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
