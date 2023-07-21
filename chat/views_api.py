@@ -5,8 +5,12 @@ from .serializers import ContactSerializer, UserSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from . import views
-from rest_framework.exceptions import ValidationError
 from django.contrib.auth.models import User
+from rest_framework import status
+from .tasks import send_mail
+import string
+import random
+
 
 class ContactApi(APIView):
     permission_classes = [IsAuthenticated]
@@ -49,3 +53,49 @@ class AddUserContactApi(APIView):
         user_contacts, created = Contact.objects.get_or_create(contact_owner_id=request.user)
         user_contacts.contact_id.add(user_add)
         return Response({'message': 'user_added'})
+
+
+def send_verification(username, to_email):
+    title = 'Chat App Confirmation'
+    html_address = 'chat/email_template.html'
+    ver_code = ''.join(random.choice(string.digits) for x in range(6))
+    context = {
+        'username': username,
+        'ver_code': ver_code
+    }
+    send_mail(
+        title=title,
+        html_address=html_address,
+        context=context,
+        to_email=to_email
+    )
+
+
+def user_unactivated(username):
+    user = User.objects.get(username=username)
+    user.is_active = False
+    user.save()
+
+
+class RegistrationAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, format=None, *args, **kwargs):
+        serializer = RegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            username= serializer.validated_data['username']
+            email = serializer.validated_data['email']
+            user_unactivated(username)
+            send_verification(username, email)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EmailVerificationAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self):
+        pass
+
+
