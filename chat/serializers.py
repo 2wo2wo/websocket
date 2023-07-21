@@ -35,3 +35,9 @@ class RegistrationSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+
+
+class VerificationSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    ver_code = serializers.CharField()
+

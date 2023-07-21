@@ -25,3 +25,12 @@ class Unique_room(models.Model):
     def __str__(self):
         return str(self.id)
 
+
+class VerificationUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+    ver_code = models.CharField(max_length=6)
+    date_modified = models.DateTimeField(auto_now=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{ self.user.username }'s"

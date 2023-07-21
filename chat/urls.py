@@ -17,7 +17,8 @@ url_apis = [
     path('search_user/', views_api.ContactSearchApi.as_view(), name='search_user'),
     path('user_add/', views_api.AddUserContactApi.as_view(), name='user_add'),
     path('social_auth/google', GoogleLogin.as_view(), name='google_authentication'),
-    path('registration/', views_api.RegistrationAPIView.as_view())
+    path('registration/', views_api.RegistrationAPIView.as_view()),
+    path('verification/', views_api.EmailVerificationAPIView.as_view())
 ]
 
 
