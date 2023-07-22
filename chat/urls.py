@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from .oauth_social import GoogleLogin
-
+from .swagger import swagger_urls
 
 url_apis = [
     path('user_contacts/', views_api.ContactApi.as_view(), name='contact_api'),
@@ -18,7 +18,8 @@ url_apis = [
     path('user_add/', views_api.AddUserContactApi.as_view(), name='user_add'),
     path('social_auth/google', GoogleLogin.as_view(), name='google_authentication'),
     path('registration/', views_api.RegistrationAPIView.as_view()),
-    path('verification/', views_api.EmailVerificationAPIView.as_view())
+    path('verification/', views_api.EmailVerificationAPIView.as_view()),
+    path('', include(swagger_urls))
 ]
 
 

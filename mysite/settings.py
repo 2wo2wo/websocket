@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+
     'django.contrib.staticfiles',
+    'drf_yasg',
+
     'chat.apps.ChatConfig',
 
     'django.contrib.sites',  # django-allauth
@@ -244,3 +247,16 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = os.environ.get('EMAIL_SENDING')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_SENDING_PASSWORD')
 EMAIL_PORT = 587
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Basic': {
+            'type': 'basic'
+      },
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+   }
+}
