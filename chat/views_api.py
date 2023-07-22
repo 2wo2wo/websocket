@@ -1,3 +1,5 @@
+from drf_yasg.utils import swagger_auto_schema
+
 from .models import Contact, VerificationUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -19,6 +21,7 @@ class ContactApi(APIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
 
+    @swagger_auto_schema(responses={200: ContactSerializer(many=True)})
     def get(self, request, format=None, *args, **kwargs):
         user = request.user
         contacts, created = Contact.objects.get_or_create(contact_owner_id=user)
