@@ -2,6 +2,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .models import Contact, VerificationUser
 from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 from .serializers import (ContactSerializer,
                             UserSerializer,
@@ -90,11 +91,12 @@ def user_unactivated(username):
 class RegistrationAPIView(APIView):
     permission_classes = [AllowAny]
 
+    @swagger_auto_schema(responses={200: RegistrationSerializer()})
     def post(self, request, format=None, *args, **kwargs):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            username= serializer.validated_data['username']
+            username = serializer.validated_data['username']
             email = serializer.validated_data['email']
             ver_code = user_unactivated(username)
             send_verification(username, email, ver_code)
