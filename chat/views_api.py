@@ -2,7 +2,6 @@ from drf_yasg.utils import swagger_auto_schema
 
 from .models import Contact, VerificationUser
 from rest_framework.views import APIView
-from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 from .serializers import (ContactSerializer,
                             UserSerializer,
