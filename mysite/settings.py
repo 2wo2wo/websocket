@@ -96,6 +96,9 @@ CORS_ALLOW_METHODS = (
 
 CORS_ALLOW_HEADERS = ('*',)
 
+CORS_ALLOW_CREDENTIALS = True
+
+
 CSRF_TRUSTED_ORIGINS = [
     os.environ.get("CSRF_URL"),
     "http://127.0.0.1:8000/",
