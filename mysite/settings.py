@@ -94,14 +94,7 @@ CORS_ALLOW_METHODS = (
     "OPTIONS"
 )
 
-CORS_ALLOW_HEADERS = (
-    "accept",
-    "authorization",
-    "content-type",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-)
+CORS_ALLOW_HEADERS = ('*',)
 
 CSRF_TRUSTED_ORIGINS = [
     os.environ.get("CSRF_URL"),
