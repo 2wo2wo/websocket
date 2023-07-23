@@ -118,6 +118,7 @@ def check_ver_codes(username, code):
 class EmailVerificationAPIView(APIView):
     permission_classes = [AllowAny]
 
+    @swagger_auto_schema(responses={200: VerificationSerializer()})
     def post(self, request, format=None, *args, **kwargs):
         serializer = VerificationSerializer(data=request.data)
         if serializer.is_valid():
