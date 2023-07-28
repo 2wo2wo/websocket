@@ -7,7 +7,7 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'last_login']
+        fields = ['id', 'email', 'last_login', 'first_name', 'last_name', 'photo_url', 'icon_id']
 
 
 class ContactSerializer(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class ContactSerializer(serializers.ModelSerializer):
 class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'first_name', 'last_name', 'photo_url', 'icon_id']
+        fields = ['id', 'email', 'password', 'first_name', 'last_name']
         extra_kwargs = {
             'email': {'required': True},
             'password': {'required': True}

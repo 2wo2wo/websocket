@@ -10,6 +10,8 @@ from rest_framework_simplejwt.views import (
 from .oauth_social import GoogleLogin
 from .swagger import swagger_urls
 
+from user_handler_app import urls
+
 url_apis = [
     path('user_contacts/', views_api.ContactApi.as_view(), name='contact_api'),
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -19,7 +21,8 @@ url_apis = [
     path('social_auth/google', GoogleLogin.as_view(), name='google_authentication'),
     path('registration/', views_api.RegistrationAPIView.as_view()),
     path('verification/', views_api.EmailVerificationAPIView.as_view()),
-    path('', include(swagger_urls))
+    path('', include(swagger_urls)),
+    path('', include(urls.urlpatterns))
 ]
 
 
