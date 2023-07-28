@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 import uuid
 class Message(models.Model):
     text = models.TextField('Text')
@@ -15,7 +16,7 @@ class Contact(models.Model):
     contact_owner_id = models.ForeignKey(User, models.CASCADE, related_name='contact_owner')
 
     def __str__(self):
-        return User.objects.get(pk=self.contact_owner_id.id).username + " 's contacts"
+        return User.objects.get(pk=self.contact_owner_id.id).email + " 's contacts"
 
 
 class Unique_room(models.Model):
@@ -33,4 +34,4 @@ class VerificationUser(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{ self.user.username }'s"
+        return f"{ self.user.email }'s"

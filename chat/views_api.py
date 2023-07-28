@@ -10,7 +10,8 @@ from .serializers import (ContactSerializer,
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from . import views
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 from rest_framework import status
 from .tasks import send_mail
 import string
@@ -61,11 +62,10 @@ class AddUserContactApi(APIView):
         return Response({'message': 'user_added'})
 
 
-def send_verification(username, to_email, ver_code):
+def send_verification(to_email, ver_code):
     title = 'Chat App Confirmation'
     html_address = 'chat/email_template.html'
     context = {
-        'username': username,
         'ver_code': ver_code
     }
     send_mail(
@@ -76,8 +76,8 @@ def send_verification(username, to_email, ver_code):
     )
 
 
-def user_unactivated(username):
-    user = User.objects.get(username=username)
+def user_unactivated(email):
+    user = User.objects.get(email=email)
     user.is_active = False
     user.save()
     verification_code, created = VerificationUser.objects.get_or_create(user=user)
@@ -95,22 +95,19 @@ class RegistrationAPIView(APIView):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            username = serializer.validated_data['username']
             email = serializer.validated_data['email']
-            ver_code = user_unactivated(username)
-            send_verification(username, email, ver_code)
+            ver_code = user_unactivated(email)
+            send_verification(email, ver_code)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-def check_ver_codes(username, code):
-    user = User.objects.get(username=username)
+def check_ver_codes(email, code):
+    user = User.objects.get(email=email)
     ver_code = VerificationUser.objects.get(user=user).ver_code
     if str(ver_code) == str(code):
         user.is_active = True
-
         user.save()
-        print('activated')
         return True
     return False
 
@@ -122,11 +119,11 @@ class EmailVerificationAPIView(APIView):
     def post(self, request, format=None, *args, **kwargs):
         serializer = VerificationSerializer(data=request.data)
         if serializer.is_valid():
-            username = serializer.validated_data['username']
+            email = serializer.validated_data['email']
             ver_code = serializer.validated_data['ver_code']
-            if check_ver_codes(username, code=ver_code):
-                return Response({'message': 'success'})
-            return Response({'message': 'Did not match'})
-        return Response({'message': 'not valid inputs'})
+            if check_ver_codes(email, code=ver_code):
+                return Response({'message': 'success'}, status=status.HTTP_202_ACCEPTED)
+            return Response({'message': 'Did not match'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response({'message': 'not valid inputs'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 

@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import Contact, Message, Unique_room
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+User = get_user_model()
 from django.core.exceptions import ObjectDoesNotExist
 from .decorators import auth_user_chat_room, contacts_exists
 # Create your views here.
@@ -95,15 +96,14 @@ def register(request):
         first_name = request.POST["first_name"]
         last_name = request.POST["last_name"]
         if password == password_confirm:
-            user = User.objects.create_user(username=username,
-                                            email=email,
+            user = User.objects.create_user(email=email,
                                             password=password,
                                             last_name=last_name,
                                             first_name=first_name
                                             )
 
             user.save()
-            user = authenticate(request, username=username, password=password)
+            user = authenticate(request, email=email, password=password)
             login(request, user)
             return HttpResponseRedirect(reverse('index'))
         else:

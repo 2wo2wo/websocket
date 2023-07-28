@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'drf_yasg',
 
     'chat.apps.ChatConfig',
+    'user_handler_app.apps.UserHandlerAppConfig',
 
     'django.contrib.sites',  # django-allauth
     'allauth',  # django-allauth
@@ -206,6 +207,8 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'user_handler_app.User'
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
