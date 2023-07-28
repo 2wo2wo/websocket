@@ -22,7 +22,7 @@ class ContactSerializer(serializers.ModelSerializer):
 class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'password', 'first_name', 'last_name']
+        fields = ['id', 'email', 'first_name', 'last_name', 'photo_url', 'icon_id']
         extra_kwargs = {
             'email': {'required': True},
             'password': {'required': True}
