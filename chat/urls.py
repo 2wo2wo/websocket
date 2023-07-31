@@ -22,7 +22,8 @@ url_apis = [
     path('registration/', views_api.RegistrationAPIView.as_view()),
     path('verification/', views_api.EmailVerificationAPIView.as_view()),
     path('', include(swagger_urls)),
-    path('', include(urls.urlpatterns))
+    path('', include(urls.urlpatterns)),
+    path('username_reset/', views_api.UsernameIconAPIView.as_view(), name='username-reset')
 ]
 
 

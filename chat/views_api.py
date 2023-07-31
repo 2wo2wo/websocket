@@ -127,3 +127,18 @@ class EmailVerificationAPIView(APIView):
         return Response({'message': 'not valid inputs'}, status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
+class UsernameIconAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def put(self, request, format=None, *args, **kwargs):
+        if User.objects.filter(username=request.data['username']).exists():
+            return Response({'message': 'User exists'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = UserSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'message': "Something went wrong"}, status=status.HTTP_502_BAD_GATEWAY)
+
+
+
