@@ -23,7 +23,8 @@ url_apis = [
     path('verification/', views_api.EmailVerificationAPIView.as_view()),
     path('', include(swagger_urls)),
     path('', include(urls.urlpatterns)),
-    path('username_reset/', views_api.UsernameIconAPIView.as_view(), name='username-reset')
+    path('username_reset/', views_api.UsernameIconAPIView.as_view(), name='username-reset'),
+    path('chat_room/<int:contact_id>/', views_api.GetUniqueRoomAPIView.as_view(), name='chat_room'),
 ]
 
 

@@ -16,6 +16,7 @@ from rest_framework import status
 from .tasks import send_mail
 import string
 import random
+from .views import chat_room_name
 
 
 class ContactApi(APIView):
@@ -141,4 +142,12 @@ class UsernameIconAPIView(APIView):
         return Response({'message': "Something went wrong"}, status=status.HTTP_502_BAD_GATEWAY)
 
 
+class GetUniqueRoomAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
 
+    def get(self, request, contact_id, format=None, *args, **kwargs):
+        room_name = str(chat_room_name(contact_id, request.user.id))
+        return Response({
+            'room_name': room_name
+        })
