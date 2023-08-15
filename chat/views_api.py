@@ -39,7 +39,8 @@ class ContactSearchApi(APIView):
     authentication_classes = [JWTAuthentication]
 
     def get(self, request, format=None, *args, **kwargs):
-        keyword = request.data['keyword']
+        # keyword = request.data['keyword']
+        keyword = request.query_params.get('keyword', request.user.email)
         users_found = views.search_by_key(keyword)
         user_serializer = UserSerializer(users_found, many=True)
         return Response({
