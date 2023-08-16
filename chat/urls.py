@@ -3,10 +3,7 @@ from django.urls import path,  include, re_path
 from django.views.generic import RedirectView
 
 from . import views, views_api
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+
 from .oauth_social import GoogleLogin
 from .swagger import swagger_urls
 
@@ -14,8 +11,6 @@ from user_handler_app import urls
 
 url_apis = [
     path('user_contacts/', views_api.ContactApi.as_view(), name='contact_api'),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('search_user/', views_api.ContactSearchApi.as_view(), name='search_user'),
     path('user_add/', views_api.AddUserContactApi.as_view(), name='user_add'),
     path('social_auth/google', GoogleLogin.as_view(), name='google_authentication'),
