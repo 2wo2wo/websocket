@@ -9,5 +9,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         data['first_name'] = self.user.first_name
         data['last_name'] = self.user.last_name
         data['username'] = self.user.username
+        data['photo_url'] = self.user.photo_url
+        data['icon_id'] = self.user.icon_id
+        data['last_login'] = self.user.last_login
 
         return data
