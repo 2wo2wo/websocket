@@ -1,22 +1,25 @@
 from drf_yasg.utils import swagger_auto_schema
 
-from .models import Contact, VerificationUser
+from .models import Contact, VerificationUser, Message
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import (ContactSerializer,
-                            UserSerializer,
-                            RegistrationSerializer,
-                            VerificationSerializer)
+                          UserSerializer,
+                          RegistrationSerializer,
+                          VerificationSerializer,
+                          MessageSerializer)
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from . import views
 from django.contrib.auth import get_user_model
-User = get_user_model()
 from rest_framework import status
 from .tasks import send_mail
 import string
 import random
 from .views import chat_room_name
+
+
+User = get_user_model()
 
 
 class ContactApi(APIView):
@@ -152,3 +155,46 @@ class GetUniqueRoomAPIView(APIView):
         return Response({
             'room_name': room_name
         })
+
+
+class UserMessagesHistory(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+
+    def get(self, request, format=None, *args, **kwargs):
+        queryset = self.get_chats(request.user)
+        serializer = MessageSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def get_by_max_time(self, queryset, sender=True):
+        user_history, cur = list(), 0
+        for message in queryset:
+            if message.sent_id == cur and sender:
+                continue
+            if message.owner_id == cur and not sender:
+                continue
+            cur = message.sent_id if sender else message.owner_id
+            user_history.append(message)
+        user_history.sort(key=lambda x: x.sent_id.pk if sender else x.owner_id.pk)
+        return user_history
+
+    def get_chats(self, user_id):
+        q_user = Message.objects.filter(owner_id=user_id).order_by('-time_created')
+        q_sent = Message.objects.filter(sent_id=user_id).order_by('-time_created')
+        mes_u, mes_s = self.get_by_max_time(q_user), self.get_by_max_time(q_sent)
+        i, j = 0, 0
+        temp = list()
+        while i+j < len(mes_u)+len(mes_s)-1:
+
+            if mes_u[i].sent_id.pk == mes_s[j].owner_id.pk:
+                mes_u[i] = mes_u[i] if mes_u[i].time_created > mes_s[j].time_created else mes_s[j]
+                i, j = i+1, j+1
+                continue
+            elif mes_u[i].sent_id.pk > mes_s[j].owner_id.pk:
+                temp.append(mes_s[j])
+                j += 1
+            else:
+                i += 1
+        mes_u.sort(key=lambda x: x.time_created)
+        return mes_u
+

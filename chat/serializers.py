@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Contact
+from .models import Contact, Message
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -40,4 +40,14 @@ class RegistrationSerializer(serializers.ModelSerializer):
 class VerificationSerializer(serializers.Serializer):
     email = serializers.EmailField()
     ver_code = serializers.CharField()
+
+
+class MessageSerializer(serializers.ModelSerializer):
+    owner_id = UserSerializer()
+    sent_id = UserSerializer()
+
+    class Meta:
+        model = Message
+        fields = ['id', 'text', 'time_created', 'owner_id', 'sent_id']
+
 

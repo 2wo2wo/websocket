@@ -20,6 +20,7 @@ url_apis = [
     path('', include(urls.urlpatterns)),
     path('username_reset/', views_api.UsernameIconAPIView.as_view(), name='username-reset'),
     path('chat_room/<int:contact_id>/', views_api.GetUniqueRoomAPIView.as_view(), name='chat_room'),
+    path('history/', views_api.UserMessagesHistory.as_view(), name='history')
 ]
 
 

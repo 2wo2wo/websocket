@@ -1,7 +1,11 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-User = get_user_model()
 import uuid
+
+
+User = get_user_model()
+
+
 class Message(models.Model):
     text = models.TextField('Text')
     time_created = models.DateTimeField(auto_now=True)
@@ -10,6 +14,7 @@ class Message(models.Model):
 
     def __str__(self):
         return self.text
+
 
 class Contact(models.Model):
     contact_id = models.ManyToManyField(User, blank=True)
