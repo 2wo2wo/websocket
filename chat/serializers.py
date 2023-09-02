@@ -51,3 +51,10 @@ class MessageSerializer(serializers.ModelSerializer):
         fields = ['id', 'text', 'time_created', 'owner_id', 'sent_id']
 
 
+class MessageSimpleSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Message
+        fields = '__all__'
+
+

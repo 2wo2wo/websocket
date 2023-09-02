@@ -7,7 +7,8 @@ from .serializers import (ContactSerializer,
                           UserSerializer,
                           RegistrationSerializer,
                           VerificationSerializer,
-                          MessageSerializer)
+                          MessageSerializer,
+                          MessageSimpleSerializer)
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from . import views
@@ -17,6 +18,9 @@ from .tasks import send_mail
 import string
 import random
 from .views import chat_room_name
+from .pagination import CustomNumberPagination
+from rest_framework.pagination import PageNumberPagination
+from rest_framework import generics
 
 
 User = get_user_model()
@@ -198,3 +202,22 @@ class UserMessagesHistory(APIView):
         mes_u.sort(key=lambda x: x.time_created)
         return mes_u
 
+
+class MessageBetweenUsers(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    serializer_class = MessageSimpleSerializer
+    pagination_class = CustomNumberPagination
+
+    def get_queryset(self):
+        contact_id = self.kwargs.get('contact_id')
+        queryset_user = Message.objects.filter(owner_id=self.request.user, sent_id=contact_id)
+        queryset_contact = Message.objects.filter(owner_id=contact_id, sent_id=self.request.user,)
+        queryset = queryset_contact | queryset_user
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.serializer_class(queryset, many=True)
+        page = self.paginate_queryset(serializer.data)
+        return self.get_paginated_response(page)
