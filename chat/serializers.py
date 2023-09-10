@@ -52,9 +52,12 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class MessageSimpleSerializer(serializers.ModelSerializer):
+    message = serializers.SerializerMethodField('get_message')
 
     class Meta:
         model = Message
-        fields = '__all__'
+        fields = ['id', 'message', 'time_created', 'owner_id', 'sent_id']
 
+    def get_message(self, obj):
+        return obj.text
 
