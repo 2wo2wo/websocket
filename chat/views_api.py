@@ -171,8 +171,9 @@ class UserMessagesHistory(APIView):
         return Response(serializer.data)
 
     def get_chats(self, user_id):
-        q_user = Message.objects.filter(owner_id=user_id).order_by('-time_created')
-        q_sent = Message.objects.filter(sent_id=user_id).order_by('-time_created')
+        groups = ['sent_id', '-time_created']
+        q_user = Message.objects.filter(owner_id=user_id).order_by(*groups)
+        q_sent = Message.objects.filter(sent_id=user_id).order_by(*groups)
         mes_u, mes_s = self.get_by_max_time(q_user), self.get_by_max_time(q_sent)
         return self.remove_duplicates(mes_u, mes_s)
 
