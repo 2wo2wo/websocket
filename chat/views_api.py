@@ -170,6 +170,28 @@ class UserMessagesHistory(APIView):
         serializer = MessageSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    def get_chats(self, user_id):
+        q_user = Message.objects.filter(owner_id=user_id).order_by('-time_created')
+        q_sent = Message.objects.filter(sent_id=user_id).order_by('-time_created')
+        mes_u, mes_s = self.get_by_max_time(q_user), self.get_by_max_time(q_sent)
+        return self.remove_duplicates(mes_u, mes_s)
+
+    def remove_duplicates(self, fir_arr, sec_arr):
+        i, j = 0, 0
+        while j < len(sec_arr) and i < len(fir_arr):
+            if fir_arr[i].sent_id.pk > sec_arr[j].owner_id.pk:
+                fir_arr.insert(i, sec_arr[j])
+                j, i = j + 1, i + 1
+            elif fir_arr[i].sent_id.pk < sec_arr[j].owner_id.pk:
+                i += 1
+            else:
+                fir_arr[i] = fir_arr[i] if fir_arr[i].time_created > sec_arr[j].time_created else sec_arr[j]
+                j, i = j + 1, i + 1
+        if j < len(sec_arr):
+            fir_arr.extend(sec_arr[j:])
+        fir_arr.sort(key=lambda x: x.time_created, reverse=True)
+        return fir_arr
+
     def get_by_max_time(self, queryset, sender=True):
         user_history, cur = list(), 0
         for message in queryset:
@@ -181,27 +203,6 @@ class UserMessagesHistory(APIView):
             user_history.append(message)
         user_history.sort(key=lambda x: x.sent_id.pk if sender else x.owner_id.pk)
         return user_history
-
-    def get_chats(self, user_id):
-        q_user = Message.objects.filter(owner_id=user_id).order_by('-time_created')
-        q_sent = Message.objects.filter(sent_id=user_id).order_by('-time_created')
-        mes_u, mes_s = self.get_by_max_time(q_user), self.get_by_max_time(q_sent)
-        i, j = 0, 0
-        temp = list()
-        while i+j < len(mes_u)+len(mes_s)-1:
-
-            if mes_u[i].sent_id.pk == mes_s[j].owner_id.pk:
-                mes_u[i] = mes_u[i] if mes_u[i].time_created > mes_s[j].time_created else mes_s[j]
-                i, j = i+1, j+1
-                continue
-            elif mes_u[i].sent_id.pk > mes_s[j].owner_id.pk:
-                temp.append(mes_s[j])
-                j += 1
-            else:
-                i += 1
-        mes_u.sort(key=lambda x: x.time_created)
-        return mes_u
-
 
 class MessageBetweenUsers(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
