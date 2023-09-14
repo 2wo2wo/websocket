@@ -217,10 +217,11 @@ class MessageBetweenUsers(generics.ListAPIView):
         queryset_user = Message.objects.filter(owner_id=self.request.user, sent_id=contact_id)
         queryset_contact = Message.objects.filter(owner_id=contact_id, sent_id=self.request.user,)
         queryset = queryset_contact | queryset_user
-        return queryset.order_by('-time_created')
+        return queryset
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
-        page = self.paginate_queryset(serializer.data)
-        return self.get_paginated_response(page)
+        # page = self.paginate_queryset(serializer.data)
+        # return self.get_paginated_response(page)
+        return Response(serializer.data, status=status.HTTP_200_OK)
