@@ -205,6 +205,7 @@ class UserMessagesHistory(APIView):
         user_history.sort(key=lambda x: x.sent_id.pk if sender else x.owner_id.pk)
         return user_history
 
+
 class MessageBetweenUsers(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     authentication_classes = [JWTAuthentication]
@@ -216,7 +217,7 @@ class MessageBetweenUsers(generics.ListAPIView):
         queryset_user = Message.objects.filter(owner_id=self.request.user, sent_id=contact_id)
         queryset_contact = Message.objects.filter(owner_id=contact_id, sent_id=self.request.user,)
         queryset = queryset_contact | queryset_user
-        return queryset
+        return queryset.order_by('-time_created')
 
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
