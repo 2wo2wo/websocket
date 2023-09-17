@@ -9,8 +9,8 @@ User = get_user_model()
 class Message(models.Model):
     text = models.TextField('Text')
     time_created = models.DateTimeField(auto_now=True)
-    sent_id = models.ForeignKey(User, models.CASCADE, related_name='sent_to')
-    owner_id = models.ForeignKey(User, models.CASCADE, related_name='owner')
+    sent_id = models.ForeignKey(User, models.CASCADE, related_name='sent_to', null=True)
+    owner_id = models.ForeignKey(User, models.CASCADE, related_name='owner', null=True)
 
     def __str__(self):
         return self.text
