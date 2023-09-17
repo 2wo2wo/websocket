@@ -167,7 +167,7 @@ class UserMessagesHistory(APIView):
 
     def get(self, request, format=None, *args, **kwargs):
         queryset = self.get_chats(request.user)
-        serializer = MessageSerializer(queryset, many=True)
+        serializer = MessageSerializer(queryset, many=True, context={'user_id': request.user})
         return Response(serializer.data)
 
     def get_chats(self, user_id):

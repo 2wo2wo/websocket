@@ -37,7 +37,7 @@ class User(AbstractUser, PermissionsMixin):
     last_name = models.CharField(max_length=255, blank=True)
     date_joined = models.DateTimeField(default=timezone.now, auto_created=True)
     last_login = models.DateTimeField(auto_now=True)
-
+    avatar = models.ImageField(upload_to='users', null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

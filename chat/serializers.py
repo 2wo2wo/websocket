@@ -43,12 +43,19 @@ class VerificationSerializer(serializers.Serializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    owner_id = UserSerializer()
-    sent_id = UserSerializer()
+    contact = serializers.SerializerMethodField('get_friend')
 
     class Meta:
         model = Message
-        fields = ['id', 'text', 'time_created', 'owner_id', 'sent_id']
+        fields = ['id', 'text', 'time_created', 'contact']
+
+    def get_friend(self, obj):
+        user_id = self.context.get("user_id")
+        if obj.owner_id.pk == user_id.pk:
+            res = obj.sent_id
+        else:
+            res = obj.owner_id
+        return UserSerializer(res).data
 
 
 class MessageSimpleSerializer(serializers.ModelSerializer):

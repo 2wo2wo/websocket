@@ -18,7 +18,7 @@ class Message(models.Model):
 
 class Contact(models.Model):
     contact_id = models.ManyToManyField(User, blank=True)
-    contact_owner_id = models.ForeignKey(User, models.CASCADE, related_name='contact_owner')
+    contact_owner_id = models.ForeignKey(User, models.CASCADE, related_name='contact_owner', null=True)
 
     def __str__(self):
         return User.objects.get(pk=self.contact_owner_id.id).email + " 's contacts"
